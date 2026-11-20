@@ -64,6 +64,16 @@ LIVESET_CONTRACTS: dict[str, dict[str, dict[str, Any]]] = {
             }
         ),
     },
+    "set find-samples": {
+        "args": _object({"path": _STRING, "library": _STRING}),
+        "result": _object(
+            {"missing": _array(_object({"sample": _STRING, "candidates": _array(_STRING)}))}
+        ),
+    },
+    "set restore-sample": {
+        "args": _object({"path": _STRING, "sample": _STRING, "source": _STRING}),
+        "result": _object({"restored": _STRING}),
+    },
     "set inspect": {
         "args": _PATH_ARGS,
         "result": _object(

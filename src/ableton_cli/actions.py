@@ -574,6 +574,21 @@ STABLE_ACTION_MAPPINGS: tuple[StableActionMapping, ...] = (
         capability="Validate offline render analysis and master-chain readiness against targets.",
     ),
     StableActionMapping(
+        action="find_live_set_samples",
+        command=(
+            "uv run ableton-cli --output json set find-samples --path <set.als> --library <dir>"
+        ),
+        capability="Find filename matches for missing project samples offline.",
+    ),
+    StableActionMapping(
+        action="restore_live_set_sample",
+        command=(
+            "uv run ableton-cli --output json set restore-sample --path <set.als> "
+            "--sample <relative-path> --source <file>"
+        ),
+        capability="Copy a reviewed match to its missing project path.",
+    ),
+    StableActionMapping(
         action="inspect_live_set",
         command="uv run ableton-cli --output json set inspect --path <set.als>",
         capability=(

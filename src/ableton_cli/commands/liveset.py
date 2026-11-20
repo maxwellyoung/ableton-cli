@@ -16,6 +16,7 @@ from ..liveset.document import load_live_set
 from ..liveset.inspect import inspect_live_set
 from ..liveset.lint import lint_live_set, require_no_errors
 from ..liveset.ops.automation import AutomationScope, write_automation
+from ..liveset.recovery import find_samples, restore_sample
 from ..liveset.save import require_new_output, save_live_set
 from ..runtime import execute_command, get_runtime
 from ._validation import invalid_argument, parse_envelope_points_json
@@ -25,6 +26,44 @@ automation_app = typer.Typer(help="Arrangement automation lanes", no_args_is_hel
 set_app.add_typer(automation_app, name="automation")
 
 SetPathOption = Annotated[Path, typer.Option("--path", help="Live Set (.als) path")]
+
+
+@set_app.command("find-samples")
+def set_find_samples(
+    ctx: typer.Context,
+    path: SetPathOption,
+    library: Annotated[Path, typer.Option(help="Sample library to search")],
+) -> None:
+    """Find candidate files for missing project-relative samples offline."""
+    execute_command(
+        ctx,
+        command="set find-samples",
+        args={"path": str(path), "library": str(library)},
+        action=lambda: find_samples(path, library),
+    )
+
+
+@set_app.command("restore-sample")
+def set_restore_sample(
+    ctx: typer.Context,
+    path: SetPathOption,
+    sample: Annotated[str, typer.Option(help="Missing project-relative path")],
+    source: Annotated[Path, typer.Option(help="Chosen replacement file")],
+) -> None:
+    """Copy a chosen match into the project without overwriting files."""
+    command = "set restore-sample"
+
+    def run() -> dict[str, str]:
+        if get_runtime(ctx).read_only:
+            raise read_only_violation(command)
+        return restore_sample(path, sample, source)
+
+    execute_command(
+        ctx,
+        command=command,
+        args={"path": str(path), "sample": sample, "source": str(source)},
+        action=run,
+    )
 
 
 @set_app.command("inspect")

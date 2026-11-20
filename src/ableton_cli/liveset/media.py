@@ -52,6 +52,19 @@ def _value(file_ref: ET.Element, tag: str) -> str:
     return "" if element is None else element.get("Value", "")
 
 
+def project_sample_sizes(document: LiveSetDocument) -> dict[str, set[int]]:
+    """Positive recorded byte sizes for each project-relative sample."""
+    result: dict[str, set[int]] = {}
+    for ref in document.root.iterfind(".//SampleRef/FileRef"):
+        path = _value(ref, "RelativePath")
+        if _value(ref, "RelativePathType") == PROJECT_RELATIVE and path:
+            sizes = result.setdefault(path, set())
+            value = _value(ref, "OriginalFileSize")
+            if value.isascii() and value.isdecimal() and int(value) > 0:
+                sizes.add(int(value))
+    return result
+
+
 def _sample_refs(document: LiveSetDocument) -> set[tuple[str, str, str]]:
     """Unique ``(relative_path_type, relative_path, path)`` sample references."""
     refs = set()

@@ -3,6 +3,27 @@
 `ableton-cli` is a Python CLI to control and inspect Ableton Live through a local Remote Script.
 It is designed for both humans and automation (Skills/agents), with stable JSON output and fixed exit codes.
 
+## Recover missing project samples
+
+From this fork's checkout, search a sample library for every missing project-relative
+sample in a saved Live 12 set. This works with Live closed, including sets inside a
+project's Backup folder.
+
+```bash
+uv run ableton-cli --output json set find-samples --path "Song Project/Song.als" --library /Volumes/Samples
+uv run ableton-cli set restore-sample --path "Song Project/Song.als" --sample "Samples/Recorded/Vox.wav" --source "/Volumes/Samples/Session 4/Vox.wav"
+uv run ableton-cli set lint --path "Song Project/Song.als"
+```
+
+The search walks the library once and lists every case-insensitive filename match
+relative to that library. When Live recorded a positive original file size, both
+search and restore require the byte count to match. An empty candidate list means the search found no match.
+Audition the candidates before choosing one, even when only one filename matches.
+Restore copies the chosen file to the exact missing path and refuses to overwrite
+existing files. Restore requires a project volume with hard-link support, such as
+APFS or NTFS. The set itself stays byte-for-byte intact. Library and Pack references
+are outside this search's scope. Run the search again to see what still needs recovery.
+
 ## Prerequisites
 
 - Ableton Live 12+ (the Remote Script uses dataclass `slots=True`, which requires the

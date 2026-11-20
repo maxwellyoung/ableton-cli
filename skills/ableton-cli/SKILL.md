@@ -191,6 +191,8 @@ Mastering workflow is measurement-first:
 ### Offline Live Set Files
 
 ```bash
+uv run ableton-cli set find-samples --path ./Song.als --library ./Library
+uv run ableton-cli set restore-sample --path ./Song.als --sample Samples/Kick.wav --source ./Library/Kick.wav
 uv run ableton-cli set inspect --path ./Song\ Project/Song.als
 uv run ableton-cli set lint --path ./Song\ Project/Song.als
 uv run ableton-cli set diff --from ./Song\ Project/Song.als --to ./Song\ Project/Song-v2.als
@@ -742,6 +744,8 @@ uv run ableton-cli --output json ping
 - `observe_standard_effect_state` -> `uv run ableton-cli --output json effect <eq8|limiter|compressor|auto-filter|reverb|utility> observe --track-index <track> --device-index <device>`
 - `remix_mastering_plan` -> `uv run ableton-cli --output json remix mastering plan --project <remix_project.json>`
 - `remix_mastering_qa` -> `uv run ableton-cli --output json remix mastering qa --project <remix_project.json> --render <wav>`
+- `find_live_set_samples` -> `uv run ableton-cli --output json set find-samples --path <set.als> --library <dir>`
+- `restore_live_set_sample` -> `uv run ableton-cli --output json set restore-sample --path <set.als> --sample <relative-path> --source <file>`
 - `inspect_live_set` -> `uv run ableton-cli --output json set inspect --path <set.als>`
 - `lint_live_set` -> `uv run ableton-cli --output json set lint --path <set.als>`
 - `diff_live_set` -> `uv run ableton-cli --output json set diff --from <a.als> --to <b.als>`
