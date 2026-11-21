@@ -96,7 +96,7 @@ Stable action names and CLI mappings for automation wrappers.
 | `observe_standard_effect_state` | `uv run ableton-cli --output json effect <eq8|limiter|compressor|auto-filter|reverb|utility> observe --track-index <track> --device-index <device>` | Capture one-shot wrapper state snapshot keyed by stable effect keys. |
 | `remix_mastering_plan` | `uv run ableton-cli --output json remix mastering plan --project <remix_project.json>` | Generate a non-destructive master chain plan in the remix manifest. |
 | `remix_mastering_qa` | `uv run ableton-cli --output json remix mastering qa --project <remix_project.json> --render <wav>` | Validate offline render analysis and master-chain readiness against targets. |
-| `find_live_set_samples` | `uv run ableton-cli --output json set find-samples --path <set.als> --library <dir>` | Find filename matches for missing project samples offline. |
+| `find_live_set_samples` | `uv run ableton-cli --output json set find-samples --path <set.als> --library <dir>` | Find missing project samples offline and report blocked references. |
 | `restore_live_set_sample` | `uv run ableton-cli --output json set restore-sample --path <set.als> --sample <relative-path> --source <file>` | Copy a reviewed match to its missing project path. |
 | `inspect_live_set` | `uv run ableton-cli --output json set inspect --path <set.als>` | Summarize a Live Set file offline: song, tracks, returns, scenes, locators, plug-ins. |
 | `lint_live_set` | `uv run ableton-cli --output json set lint --path <set.als>` | Check a Live Set file offline for ID integrity errors and missing samples. |

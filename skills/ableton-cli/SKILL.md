@@ -201,6 +201,8 @@ uv run ableton-cli set automation write --path ./Song\ Project/Song.als --out ./
 uv run ableton-cli set automation write --path ./Song\ Project/Song.als --out ./Song\ Project/Song-tempo.als --main --target mixer.tempo --points-json '[{"time":0,"value":120},{"time":128,"value":132}]'
 ```
 
+Inspect both `result.missing` and `result.blocked`. Use the exact stored path to select a sample. Restore needs POSIX directory handles and hard links.
+
 `set` commands read `.als` files directly and never contact Live. They accept Live 12
 sets only (`SET_SCHEMA_UNSUPPORTED` otherwise) and fail with `SET_FILE_INVALID` for
 files that are not gzip-compressed Live Set XML. `set lint` exits `20` with

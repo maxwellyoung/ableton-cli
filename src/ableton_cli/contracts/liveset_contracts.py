@@ -67,7 +67,14 @@ LIVESET_CONTRACTS: dict[str, dict[str, dict[str, Any]]] = {
     "set find-samples": {
         "args": _object({"path": _STRING, "library": _STRING}),
         "result": _object(
-            {"missing": _array(_object({"sample": _STRING, "candidates": _array(_STRING)}))}
+            {
+                "missing": _array(_object({"sample": _STRING, "candidates": _array(_STRING)})),
+                "blocked": _array(
+                    _object(
+                        {"sample": _STRING, "reason": _STRING, "expected_sizes": _array(_INTEGER)}
+                    )
+                ),
+            }
         ),
     },
     "set restore-sample": {

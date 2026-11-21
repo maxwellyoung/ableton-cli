@@ -17,7 +17,7 @@ from __future__ import annotations
 import xml.etree.ElementTree as ET
 from collections import Counter
 from dataclasses import dataclass
-from pathlib import Path, PurePath
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 from .document import LiveSetDocument
@@ -78,7 +78,8 @@ def _sample_refs(document: LiveSetDocument) -> set[tuple[str, str, str]]:
 def _project_problem(relative_path: str, project_root: Path | None) -> str | None:
     if project_root is None:
         return "project_root_not_found"
-    if not (project_root / relative_path).is_file():
+    stored = PureWindowsPath(relative_path)
+    if stored.anchor or ".." in stored.parts or not project_root.joinpath(*stored.parts).is_file():
         return "media_missing"
     return None
 
@@ -87,7 +88,10 @@ def _findings(problems: list[tuple[str | None, str]]) -> list[Finding]:
     by_code: dict[str, list[dict[str, str]]] = {}
     for code, relative_path in problems:
         if code is not None:
-            entry = {"relative_path": relative_path, "file_name": PurePath(relative_path).name}
+            entry = {
+                "relative_path": relative_path,
+                "file_name": PureWindowsPath(relative_path).name,
+            }
             by_code.setdefault(code, []).append(entry)
     return [
         Finding(

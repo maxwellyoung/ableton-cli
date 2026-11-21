@@ -15,14 +15,24 @@ uv run ableton-cli set restore-sample --path "Song Project/Song.als" --sample "S
 uv run ableton-cli set lint --path "Song Project/Song.als"
 ```
 
-The search walks the library once and lists every case-insensitive filename match
-relative to that library. When Live recorded a positive original file size, both
-search and restore require the byte count to match. An empty candidate list means the search found no match.
-Audition the candidates before choosing one, even when only one filename matches.
-Restore copies the chosen file to the exact missing path and refuses to overwrite
-existing files. Restore requires a project volume with hard-link support, such as
-APFS or NTFS. The set itself stays byte-for-byte intact. Library and Pack references
-are outside this search's scope. Run the search again to see what still needs recovery.
+The search walks the library once. It matches filenames case-insensitively across
+Unicode spellings and accepts either slash in stored project paths. Each entry in
+`missing` lists candidate paths relative to the library. Review the takes by ear:
+even matches with the recorded byte count can contain different audio.
+
+Check `blocked` as well as `missing`. Each blocked entry gives the stored sample
+path, a reason, and any positive byte sizes recorded in the set. Reasons include
+conflicting sizes, an existing file of the wrong size, linked paths, unsafe paths,
+inaccessible paths, and non-regular files. Other references can still be restored.
+Library and Pack references are outside this scan. Files without a recorded size
+can only be checked for presence.
+
+Restore uses the exact `sample` string from the report. It copies the chosen
+take without editing the set or replacing an existing file. On POSIX the new
+file takes the source's read/write permissions subject to the process umask.
+Restore requires directory-relative filesystem operations and hard links.
+Windows supports discovery; restore reports an unsupported-operation error
+before creating files. Run discovery again after each recovery pass.
 
 ## Prerequisites
 

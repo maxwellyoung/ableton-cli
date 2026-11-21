@@ -16443,6 +16443,32 @@
       "result": {
         "additional_properties": false,
         "properties": {
+          "blocked": {
+            "items": {
+              "additional_properties": false,
+              "properties": {
+                "expected_sizes": {
+                  "items": {
+                    "type": "integer"
+                  },
+                  "type": "array"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "sample": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "sample",
+                "reason",
+                "expected_sizes"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
           "missing": {
             "items": {
               "additional_properties": false,
@@ -16467,7 +16493,8 @@
           }
         },
         "required": [
-          "missing"
+          "missing",
+          "blocked"
         ],
         "type": "object"
       },

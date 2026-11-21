@@ -578,7 +578,7 @@ STABLE_ACTION_MAPPINGS: tuple[StableActionMapping, ...] = (
         command=(
             "uv run ableton-cli --output json set find-samples --path <set.als> --library <dir>"
         ),
-        capability="Find filename matches for missing project samples offline.",
+        capability="Find missing project samples offline and report blocked references.",
     ),
     StableActionMapping(
         action="restore_live_set_sample",
